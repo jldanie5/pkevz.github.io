@@ -1,10 +1,6 @@
 var ably = new Ably.Realtime('ZkFqGA.IVi64w:aaGrO9xvFbuGIplv');
 var channel = ably.channels.get('game1');
 
-function publish(title,message){
-    channel.publish(title,message);
-}
-
 window.addEventListener('DOMContentLoaded', (event) => {
     swal("What color would you like?", {
         buttons: {

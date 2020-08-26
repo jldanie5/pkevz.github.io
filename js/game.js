@@ -122,6 +122,7 @@ function preload ()
     this.load.image('red', fold.concat('red.png'));
     this.load.image('red-invisible', fold.concat('red-invisible.png'));
     this.load.image('blue-invisible', fold.concat('blue-invisible.png'));
+    this.load.image('flame',fold.concat('flame.png'))
 }
 
 function create ()
@@ -152,6 +153,9 @@ function create ()
     targetPtRange = this.add.graphics();
     pBlue = this.add.image(0, 0, 'blue');
     pRed = this.add.image(0, 0, 'red');
+    blueFlame = this.add.image(0,0,'flame')
+    redFlame = this.add.image(0,0,'flame')
+    
 
     pBlue.rmoe = posVel2RMOE(0,.25,.125*omega,0);
     pBlue.x = i2x(0);
