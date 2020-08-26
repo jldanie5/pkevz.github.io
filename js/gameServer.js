@@ -2,17 +2,18 @@ var ably = new Ably.Realtime('ZkFqGA.IVi64w:aaGrO9xvFbuGIplv');
 var channel = ably.channels.get('game1');
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    swal("What color would you like?", {
+    swal("What game-mode/color would you like?", {
         buttons: {
-            blue1P: "Blue/1 Player",
-            red: "Red",
-            blue: "Blue",
+            blue: "1 Player - Blue",
+            red: "1 Player - Red",
+            rednet: "Network - Red",
+            bluenet: "Network - Blue",
         },
         closeOnClickOutside: false,
     }).then(
         (value)=>{
-            player=value;
-            if (value=='blue'){
+            if (value=='bluenet'){
+                player='blue';
                 channel.subscribe('data', function(message) {
                     if (message.data.from =='red'){
                         console.log("recieved message from red",message)
@@ -25,15 +26,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
                             timerStart=true;
                             startTime=message.data.startTime;
                         }else{
-                            console.log(p2)
                             p2.rmoe=message.data.rmoe;
                             p2.t0=message.data.t0;
-                            console.log(p2)
+                            p2PercNet = message.data.perc;
+                            winTimeNet = message.data.winTime;
+                            winnerNet = message.data.winner;
+                            winnerNet = winnerNet.replace("1","t").replace("2","1").replace("t","2");
+                            lastMsgT = t;
                         }
                     }
                 });
                 channel.publish('data',{from:'blue',startTime:null,rmoe:{rd: 0, id0: 0, B0: 1.5707963267948966, a: 0.25}, t0: 0,winner:"",winTime:0});
-            }else if(value == 'red'){
+            }else if(value == 'rednet'){
+                player='red';
                 channel.subscribe('data', function(message) {
                     if (message.data.from =='blue'){
                         console.log("recieved message from blue",message)
@@ -48,15 +53,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
                         }else{
                             p2.rmoe=message.data.rmoe;
                             p2.t0=message.data.t0;
+                            p2PercNet = message.data.perc;
+                            winTimeNet = message.data.winTime;
+                            winnerNet = message.data.winner;
+                            winnerNet = winnerNet.replace("1","t").replace("2","1").replace("t","2");
+                            lastMsgT = t;
                         }
                     }
                 });
                 channel.publish('data',{from:'red',startTime:null,rmoe:{rd: 0, id0: 0, B0: -1.5707963267948966, a: 0.25}, t0: 0,winner:"",winTime:0});
             }else{
-                player = 'blue';
+                player = value;
                 gameStart = false;
                 timerStart = true;
-                startTime = new Date().getTime() + 2000;
+                startTime = new Date().getTime();
                 local = true;
             }
         }
