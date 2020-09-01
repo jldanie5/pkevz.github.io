@@ -595,6 +595,62 @@ document.addEventListener('keypress', function (key) {
         $('.timeStepDiv span')[0].textContent = timeMult.toFixed(0);
     } else if (k.toLowerCase() === 's') {
         stars.visible = !stars.visible;
+    } else if (k.toLowerCase() === 'p') {
+        if (Earth.visible){
+            satPoint.forEach((pt) => {pt.visible = false;});
+            constSatPoint.forEach((pt) => {pt.visible = false;});
+            Earth.visible = false;
+            clouds.visible = false;
+            ECI.forEach((item) => {item.visible = false;});
+            ECEF.forEach((item) => {item.visible = false;});
+            constLocalHoriz.forEach(lineobj => {lineobj.visible = false;});
+            localHoriz.forEach(lineobj => {lineobj.visible = false;})
+            lhActive = false;
+        } else {
+            satPoint.forEach((pt) => {pt.visible = !$('#optionsList input')[4].checked;});
+            constSatPoint.forEach((pt) => {pt.visible = constActive;});
+            Earth.visible = true;
+            clouds.visible = true;
+            ECI.forEach((item) => {item.visible = $('#optionsList input')[1].checked;});
+            ECEF.forEach((item) => {item.visible = $('#optionsList input')[2].checked;});
+            constLocalHoriz.forEach(lineobj => {lineobj.visible = lhActive;});
+            localHoriz.forEach(lineobj => {lineobj.visible = lhActive;})
+            $('#optionsList span')[0].textContent = $('#optionsList input')[0].value;
+            ECI.forEach((item) => {
+                item.visible = $('#optionsList input')[1].checked
+            })
+            ECEF.forEach((item) => {
+                item.visible = $('#optionsList input')[2].checked
+            })
+            if (!$('#optionsList input')[4].checked){
+                $('.controlTitle').show();
+                $('.controls').show();
+                $('.addButton').show();
+                orbit.forEach(lineobj => {lineobj.visible = true;});
+                satPoint.forEach(pointobj => {pointobj.visible = true;});
+                $('.orbitsPane').show()
+            }else{
+                $('.controlTitle').hide();
+                $('.controls').hide();
+                $('.addButton').hide();
+                orbit.forEach(lineobj => {lineobj.visible = false;});
+                satPoint.forEach(pointobj => {pointobj.visible = false;});
+                $('.orbitList').hide()
+                $('.orbitsPane').hide()
+            }
+            if ($('#optionsList input')[3].checked){
+                lhActive = true;
+                //constLocalHoriz.forEach(lineobj => {lineobj.visible = true;});
+                //localHoriz.forEach(lineobj => {lineobj.visible = true;})
+            }else{
+                lhActive = false;
+                constLocalHoriz.forEach(lineobj => {lineobj.visible = false;});
+                localHoriz.forEach(lineobj => {lineobj.visible = false;})
+            }
+            if ($('#optionsList input')[3].checked && $('#optionsList input')[4].checked) {
+                localHoriz.forEach(lineobj => {lineobj.visible = false;})
+            }
+        }
     }
 
 
